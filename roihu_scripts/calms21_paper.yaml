@@ -1,0 +1,17 @@
+# Matches upstream config/CalMS21.yaml and mouse_dataset.py pair selection.
+dataset_format: calms21_pairs
+validation_split: none
+nkpts: 10
+image_size: 256
+frame_gap: 6
+batch_size: 5
+workers: 4
+epochs: 15
+lr: 0.001
+momentum: 0.9
+weight_decay: 0.0001
+schedule: 15
+curriculum: 4
+perc_weight: [100.0, 1.6, 2.3, 1.8, 2.8, 100.0]
+pretrained: true
+seed: 0

@@ -13,7 +13,7 @@ def compute_ssim(inputs, tr_inputs):
         edge_padding(tr_inputs*std_tensor + mean_tensor), reduction = 'none', full = True)
     to_pred = 1.0 - to_pred.unsqueeze(1)
 
-    kernel = gaussian_filter(11, 1.0).repeat(to_pred.size(1), 1, 1, 1).to(to_pred.device)
+    kernel = gaussian_filter(11, 1.0, dtype=to_pred.dtype).repeat(to_pred.size(1), 1, 1, 1).to(to_pred.device)
     to_pred = F.conv2d(to_pred, weight=kernel, stride=1, padding=0, groups=1).repeat((1,3,1,1))
 
     return to_pred
@@ -81,7 +81,7 @@ def ssim(x: torch.Tensor, y: torch.Tensor, kernel_size: int = 11, kernel_sigma: 
     x = x / data_range
     y = y / data_range
 
-    kernel = gaussian_filter(kernel_size, kernel_sigma).repeat(x.size(1), 1, 1, 1).to(y)
+    kernel = gaussian_filter(kernel_size, kernel_sigma, dtype=y.dtype).repeat(x.size(1), 1, 1, 1).to(y)
     _compute_ssim_per_channel = _ssim_per_channel
     ssim_map, cs_map = _compute_ssim_per_channel(x=x, y=y, kernel=kernel, data_range=data_range, k1=k1, k2=k2)
     ssim_val = ssim_map.mean(1)

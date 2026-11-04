@@ -23,18 +23,13 @@ def define_loss(args):
     return loss_model, criterion
 
 class computeLoss:
-    def __init__(self, args):
+    def __init__(self, args, device=None):
         self.args = args
-
-        self.loss_model = VGG_feat()
-        self.loss_model = torch.nn.DataParallel(self.loss_model).cuda(args.gpu)
-        self.loss_model = self.loss_model.eval()
-
-        recon_crit = mse_loss_mask().cuda(args.gpu)
-        separation_crit = separation_loss(args.nkpts).cuda(args.gpu)
-        rotation_crit = rotation_loss().cuda(args.gpu)
-
-        self.criterion = [recon_crit, nn.MSELoss().cuda(args.gpu), separation_crit, rotation_crit]
+        device = torch.device(device or ('cuda:' + str(args.gpu or 0)))
+        self.loss_model = VGG_feat().to(device).eval()
+        self.loss_model.requires_grad_(False)
+        self.criterion = [mse_loss_mask().to(device), nn.MSELoss().to(device),
+                          separation_loss(args.nkpts).to(device), rotation_loss().to(device)]
 
     def update_loss(self, inputs, tr_inputs, loss_mask, output, epoch):
         to_pred = compute_ssim(inputs, tr_inputs)
@@ -44,7 +39,7 @@ class computeLoss:
 
         l = self.criterion[0](to_pred, output[0], loss_mask)
         wl = _exp_running_avg(l.mean(), init_val=self.args.perc_weight[0])
-        l /= wl
+        l = l / wl
 
         loss = l.mean()
 
@@ -53,7 +48,7 @@ class computeLoss:
                                size=(vgg_feat_in[_i].size(2), vgg_feat_in[_i].size(3)), mode='bilinear') # in_mask
             l = self.criterion[0](vgg_feat_in[_i], vgg_feat_out[_i], _mask)
             wl = _exp_running_avg(l.mean(), init_val=self.args.perc_weight[_i+1])
-            l /= wl
+            l = l / wl
 
             loss += l.mean()
 

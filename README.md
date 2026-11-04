@@ -18,6 +18,10 @@ Our code currently supports running keypoint discovery on your own videos, where
 - Support for keypoint discovery on bounding boxes
 - Support for multiple similar agents
 
+# CSC Roihu
+
+See [roihu_scripts/README.md](roihu_scripts/README.md) for modern single-device training, weights-only fine-tuning, resume, and local CPU checks.
+
 # Quick Start
 Follow these instructions if you would like to quickly try out training B-KinD on CalMS21 and Human 3.6M and using discovered keypoints in downstream tasks. Please see these instructions on [setting up a new dataset](https://github.com/neuroethology/BKinD#your-own-dataset) to apply B-KinD on your own dataset.
 

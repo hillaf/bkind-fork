@@ -240,8 +240,8 @@ class Model(nn.Module):
         s_y = heatmap.sum(3)  # (N, K, H)
         s_x = heatmap.sum(2)  # (N, K, W)
         
-        y = torch.linspace(-1.0, 1.0, H).cuda()
-        x = torch.linspace(-1.0, 1.0, W).cuda()
+        y = torch.linspace(-1.0, 1.0, H, device=heatmap.device, dtype=heatmap.dtype)
+        x = torch.linspace(-1.0, 1.0, W, device=heatmap.device, dtype=heatmap.dtype)
         
         u_y = (y * s_y).sum(2) / s_y.sum(2)  # (N, K)
         u_x = (x * s_x).sum(2) / s_x.sum(2)
@@ -262,8 +262,8 @@ class Model(nn.Module):
         mu_x = u_x.unsqueeze(2).unsqueeze(3)  # (N, K, 1, 1)
         mu_y = u_y.unsqueeze(2) 
         
-        y = torch.linspace(-1.0, 1.0, H).cuda()
-        x = torch.linspace(-1.0, 1.0, W).cuda()
+        y = torch.linspace(-1.0, 1.0, H, device=u_x.device, dtype=u_x.dtype)
+        x = torch.linspace(-1.0, 1.0, W, device=u_x.device, dtype=u_x.dtype)
         y = torch.reshape(y, (1, H))
         x = torch.reshape(x, (1, 1, W))
         

@@ -1,0 +1,5 @@
+# Torch/torchvision and their CUDA libraries come from the CSC module.
+piq==0.8.0
+PyYAML>=6,<7
+Pillow>=10,<14
+numpy>=1.26,<3

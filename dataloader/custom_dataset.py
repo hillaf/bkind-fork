@@ -9,12 +9,17 @@ import torchvision.transforms.functional as TF
 from dataloader.data_utils import *
 
 def generate_pair_images(root, gap):
+    if gap < 1:
+        raise ValueError('frame_gap must be positive')
     images = []
     root = os.path.expanduser(root)
 
     for video in sorted(os.listdir(root)):
         img_root = os.path.join(root, video)
-        img_list = sorted(os.listdir(img_root))
+        if not os.path.isdir(img_root):
+            continue
+        img_list = sorted(name for name in os.listdir(img_root)
+                          if os.path.splitext(name)[1].lower() in extensions)
         for index in range(0, len(img_list) - gap, gap//10+1):
             im0 = os.path.join(img_root, img_list[index])
             im1 = os.path.join(img_root, img_list[index+gap])

@@ -81,7 +81,7 @@ class mse_loss_mask(nn.Module):
         # loss = (input - target).abs()
         if mask is not None:
             loss = loss * mask
-        if self.reduction is 'mean':
+        if self.reduction == 'mean':
             loss = loss.mean()
             
         return loss

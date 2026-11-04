@@ -1,0 +1,15 @@
+# Override data on the command line; clips must be split by video/session.
+nkpts: 8
+image_size: 256
+frame_gap: 6
+batch_size: 4
+workers: 4
+epochs: 30
+lr: 0.001
+momentum: 0.9
+weight_decay: 0.0001
+schedule: 30
+curriculum: 4
+perc_weight: [100.0, 1.6, 2.3, 1.8, 2.8, 100.0]
+pretrained: true
+seed: 0
