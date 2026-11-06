@@ -42,6 +42,11 @@ def dataset(config,split):
     if config.get('dataset_format','custom') == 'calms21_pairs':
         if split != 'train':raise ValueError('Discovery manifest contains training only; no test validation')
         return PairManifestDataset(config['data'],transform(config['image_size']),config['image_size'],config['frame_gap'])
+    if config.get('dataset_format') == 'awvs_pairs':
+        return PairManifestDataset(
+            config['data'], transform(config['image_size']), config['image_size'],
+            config['frame_gap'], split=split,
+        )
     if config.get('dataset_format','custom') != 'custom':raise ValueError('Unknown dataset_format')
     root=Path(config['data'])/split
     if not root.is_dir():raise ValueError(f'Missing split: {root}')

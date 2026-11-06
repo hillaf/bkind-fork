@@ -2,3 +2,8 @@ checkpoint/*
 data/*
 .ipynb_checkpoints/
 */__pycache__/**
+.venv-*/
+.torch-cache/
+.pip-cache/
+outputs/
+slurm-*.out
